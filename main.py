@@ -3,67 +3,62 @@ from langchain_community.document_loaders import WebBaseLoader
 from chains import Chain
 from portfolio import Portfolio
 from utils import clean_text
-import sqlite3
 
-# Function to inject custom CSS for font styling
+
+# Function to inject custom CSS for font styling and background color
 def set_custom_css():
     st.markdown(
         """
         <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap');
 
-        /* Apply font to all elements */
+        /* Apply Quicksand font to all elements */
         html, body, [class*="css"] {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        /* Background color for the entire app */
+        .main {
+            background-color: #0b090a; 
         }
 
         /* Title style */
-        h1, h2, h3 {
-            font-family: 'Poppins', sans-serif;
+        h2, h3 {
+            font-family: 'Quicksand', sans-serif;
+        }
+         h1 {
+            font-family: 'Jost', sans-serif;
+        }
+        
+
+        /* Remove default styling for text input field */
+        .stTextInput {
+            border: none;  /* Remove default border */
+            padding: 0;  /* Remove default padding */
         }
 
-        /* Specific styles for Streamlit components */
-        .stTextInput input, .stButton, .stText, .stMarkdown {
-            font-family: 'Poppins', sans-serif;
-        }
-
-        /* Additional customizations for input fields */
+        /* Custom styles for input fields */
         .stTextInput input {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Quicksand', sans-serif;
+            border-radius: 15px;  /* Curved border */
+            border: 2px solid #9d4edd;  /* Border color */
+            padding: 10px;  /* Add padding for better appearance */
+            outline: none;  /* Remove outline */
         }
+
+        /* Add hover effect for input field */
+        .stTextInput input:hover {
+            border-color: #6a1b9a;  /* Change border color on hover */
+        }
+    
+        
+        
+
         </style>
         """,
         unsafe_allow_html=True
     )
-
-    def display_links():
-        st.markdown(
-            """
-            <style>
-            .box {
-                border: 1px solid #ddd;
-                padding: 10px;
-                border-radius: 5px;
-                font-family: 'Poppins', sans-serif;
-                font-size: 14px;
-            }
-            .link {
-                color: blue;
-                text-decoration: underline;
-            }
-            </style>
-
-            <div class="box">
-            <strong>Test Links:</strong> <br><br>
-            <p>Money forward company job description link.</p>
-            <a class="link" href="https://hrmos.co/pages/moneyforward/jobs/1877612029521268793" target="_blank">https://hrmos.co/pages/moneyforward/jobs/1877612029521268793</a>
-            <br><br>
-            <p>Tata company job description link.</p>
-            <a class="link" href="https://www.naukri.com/job-listings-manager-cloud-security-customer-service-operations-tata-communications-ltd-pune-4-to-9-years-101024501589?src=jobsearchDesk&sid=17288114178845667&xp=6&px=1" target="_blank">https://www.naukri.com/job-listings-manager-cloud-security-customer-service-operations-tata-communications-ltd-pune-4-to-9-years-101024501589</a>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
 
 
 def display_links():
@@ -71,35 +66,33 @@ def display_links():
         """
         <style>
         .box {
-            border: 1px solid #ddd;
+            border: 1px dashed #9d4edd;  /* Changed to dashed border with purple color */
             padding: 10px;
-            border-radius: 5px;
-            font-family: 'Poppins', sans-serif;
+            border-radius: 8px;
+            font-family: 'Quicksand', sans-serif;
             font-size: 14px;
-        }
-        .link {
-            color: blue;
-            text-decoration: underline;
         }
         </style>
 
         <div class="box">
-        <strong>Test Links:</strong> <br><br>
-        <p>Money forward company job description link.</p>
-        <a class="link" href="https://hrmos.co/pages/moneyforward/jobs/1877612029521268793" target="_blank">https://hrmos.co/pages/moneyforward/jobs/1877612029521268793</a>
-        <br><br>
-        <p>Tata company job description link.</p>
-        <a class="link" href="https://www.naukri.com/job-listings-manager-cloud-security-customer-service-operations-tata-communications-ltd-pune-4-to-9-years-101024501589?src=jobsearchDesk&sid=17288114178845667&xp=6&px=1" target="_blank">https://www.naukri.com/job-listings-manager-cloud-security-customer-service-operations-tata-communications-ltd-pune-4-to-9-years-101024501589</a>
+        <strong>Test Input Links:</strong> <br>
+        <p>🔷Money forward company job description link.</p>
+        <p>https://hrmos.co/pages/moneyforward/jobs/1877612029521268793</p>
+        <p>🔷Human Resocia Co., Ltd.</p>
+        <p>https://www.daijob.com/en/jobs/detail/1120169</p>
         </div>
         """,
         unsafe_allow_html=True
     )
 
+
 def create_streamlit_app(llm, portfolio, clean_text):
-    st.markdown("<h1 style='font-family: Poppins;'>📧 Business Mail Generator</h1>", unsafe_allow_html=True)
-    display_links()
-    url_input = st.text_input("Enter a URL:", value="Paste Job description link here")
+    st.markdown("<h1 style='font-family: Jost;color: #9d4edd;'>📧 SALES MAIL GENERATOR</h1>", unsafe_allow_html=True)
+
+    url_input = st.text_input("Enter a URL:")
     submit_button = st.button("Submit")
+    display_links()
+    st.markdown("----------------------------------------------------------------------------------------------------------")
 
     if submit_button:
         try:
@@ -114,8 +107,6 @@ def create_streamlit_app(llm, portfolio, clean_text):
                 st.code(email, language='markdown')
         except Exception as e:
             st.error(f"An Error Occurred: {e}")
-
-    # Add download button for Android app APK
 
 
 if __name__ == "__main__":
