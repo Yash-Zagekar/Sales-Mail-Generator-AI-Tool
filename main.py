@@ -74,13 +74,14 @@ def display_links():
         }
         </style>
 
-        <div class="box">
-        <strong>Test Input Links:</strong> <br>
-        <p>🔷Money forward company job description link.</p>
-        <p>https://hrmos.co/pages/moneyforward/jobs/1877612029521268793</p>
-        <p>🔷Human Resocia Co., Ltd.</p>
-        <p>https://www.daijob.com/en/jobs/detail/1120169</p>
-        </div>
+    <div class="box">
+    <strong>💡Note: </strong>
+    <p style="margin: 0;">🔷Ensure the URLs you provide are valid and contain accurate descriptions of the job postings</p>
+    <p style="margin: 0;">Following are test links:</p>
+    <p style="margin: 0;">https://japan-dev.com/jobs/geniee/geniee-aigenerative-ai-engineer-ixsc0h</p>
+    <p style="margin: 0;">https://japan-dev.com/jobs/rakuten/rakuten-project-manager---technology-platforms-office-6fals7</p>
+    </div>
+
         """,
         unsafe_allow_html=True
     )
